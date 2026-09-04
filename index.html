@@ -51,6 +51,22 @@
   --ease:cubic-bezier(.22,.7,.2,1);
 }
 
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0D1215;
+  --bg-soft:#151D21;
+  --surface:#182126;
+  --ink:#F1F5F3;
+  --ink-soft:#AAB7B8;
+  --ink-faint:#718083;
+  --line:#2B383C;
+  --line-soft:#233034;
+  --teal:#20C7B1;
+  --teal-deep:#5AD8C5;
+  --teal-tint:#123B38;
+  --amber-tint:#3A2C1B;
+}
+
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
@@ -113,6 +129,7 @@ header.nav{
   backdrop-filter:blur(14px) saturate(1.1);
   border-bottom:1px solid var(--line);
 }
+html[data-theme="dark"] header.nav{background:rgba(13,18,21,0.84);}
 .nav-inner{
   max-width:1180px;margin:0 auto;padding:0 32px;
   height:68px;display:flex;align-items:center;justify-content:space-between;
@@ -151,6 +168,14 @@ header.nav{
 }
 .nav-cta:hover{background:var(--teal-deep) !important;transform:translateY(-1px);}
 .nav-toggle{display:none;background:none;border:none;padding:6px;color:var(--ink);}
+.theme-toggle{
+  width:36px;height:36px;border:1px solid var(--line);border-radius:50%;
+  background:var(--surface);color:var(--ink-soft);display:inline-flex;align-items:center;justify-content:center;
+  transition:color .25s var(--ease),border-color .25s var(--ease),transform .25s var(--ease);
+}
+.theme-toggle:hover{color:var(--teal-deep);border-color:var(--teal);transform:rotate(8deg);}
+.theme-toggle .icon{width:17px;height:17px;}
+.theme-toggle .theme-label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 .mobile-panel{
   display:none;position:fixed;inset:68px 0 0 0;z-index:190;
   background:var(--bg);padding:2rem 32px;flex-direction:column;gap:1.6rem;
@@ -266,15 +291,13 @@ header.nav{
   box-shadow:0 30px 60px -25px rgba(0,0,0,0.5);
 }
 .hero-v2-photo img{width:100%;height:100%;object-fit:cover;object-position:top center;}
+.cv-note{font-size:0.75rem;color:var(--hero-text-muted);margin-top:-1.8rem;margin-bottom:2rem;}
 @media (max-width:900px){
   .hero-v2-visual{padding-top:0;}
   .hero-v2-blob,.hero-v2-photo{width:64%;}
 }
 
-#identity .editor{max-width:760px;margin:0 auto;}
-.identity-head{text-align:center;}
-.identity-head .tag-line{justify-content:center;}
-.identity-head .h2{margin-left:auto;margin-right:auto;}
+.about-terminal{min-width:0;}
 
 /* --- code editor card --- */
 .editor{
@@ -332,33 +355,10 @@ header.nav{
 .about-copy p{color:var(--ink-soft);margin-bottom:1.3rem;font-size:0.99rem;}
 .about-copy strong{color:var(--ink);font-weight:600;}
 
-.info-card{
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
-  padding:6px;overflow:hidden;
-}
-.info-photo{position:relative;border-radius:calc(var(--r-lg) - 6px);overflow:hidden;margin-bottom:10px;}
-.info-photo img{width:100%;height:230px;object-fit:cover;object-position:top center;filter:saturate(1.02);}
-.info-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,158,142,0) 55%,rgba(11,23,26,0.55) 100%);}
-.info-photo-tag{
-  position:absolute;left:12px;bottom:12px;z-index:1;
-  background:rgba(255,255,255,0.92);backdrop-filter:blur(6px);
-  border-radius:100px;padding:6px 12px;font-family:var(--font-mono);font-size:0.72rem;
-  display:flex;align-items:center;gap:6px;color:var(--ink);
-}
-.info-photo-tag .icon{width:12px;height:12px;color:var(--teal-deep);}
-.info-row{
-  display:flex;gap:14px;align-items:center;padding:14px 12px;
-  border-bottom:1px solid var(--line-soft);
-}
-.info-row:last-child{border-bottom:none;}
-.info-icon{
-  width:38px;height:38px;border-radius:10px;background:var(--teal-tint);
-  display:flex;align-items:center;justify-content:center;color:var(--teal-deep);flex-shrink:0;
-}
-.info-label{font-size:0.72rem;color:var(--ink-faint);margin-bottom:2px;}
-.info-val{font-size:0.92rem;font-weight:500;}
-.info-val a{text-decoration:none;}
-.info-val a:hover{color:var(--teal-deep);}
+.about-facts{display:flex;gap:10px;flex-wrap:wrap;margin-top:1.8rem;}
+.about-fact{border-left:2px solid var(--teal);padding:7px 14px;background:var(--bg-soft);min-width:145px;}
+.about-fact strong{display:block;font-size:1.02rem;}
+.about-fact span{font-size:0.75rem;color:var(--ink-soft);}
 
 /* ============ STACK / TERMINAL ============ */
 .stack-shell{
@@ -381,6 +381,7 @@ header.nav{
 .cat-btn .icon{width:15px;height:15px;}
 .cat-btn:hover{color:#E4E9ED;}
 .cat-btn.active{background:rgba(15,158,142,0.14);color:var(--teal);}
+.cat-btn small{margin-left:auto;font-size:0.65rem;color:var(--code-muted);}
 
 .stack-main{padding:26px 28px 30px;min-height:340px;}
 .term-cmd{
@@ -402,6 +403,7 @@ header.nav{
 .pkg-name{display:flex;align-items:center;gap:9px;}
 .pkg-name::before{content:'▸';color:var(--teal);}
 .pkg-note{color:var(--code-muted);font-size:0.72rem;}
+.pkg-logo{width:22px;height:22px;object-fit:contain;flex-shrink:0;}
 
 /* ============ PROJECTS ============ */
 .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;}
@@ -431,6 +433,8 @@ header.nav{
   height:150px;position:relative;cursor:pointer;
   display:flex;align-items:center;justify-content:center;overflow:hidden;
 }
+.repo-cover{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .5s var(--ease),filter .3s var(--ease);}
+.repo-card:hover .repo-cover{transform:scale(1.035);filter:saturate(1.08);}
 .repo-visual svg{width:100%;height:100%;}
 .repo-overlay{
   position:absolute;inset:0;background:rgba(17,23,28,0.72);
@@ -447,6 +451,8 @@ header.nav{
 .repo-status span{width:6px;height:6px;border-radius:50%;background:var(--teal);}
 .repo-title{font-family:var(--font-display);font-weight:600;font-size:1.15rem;}
 .repo-desc{color:var(--ink-soft);font-size:0.86rem;line-height:1.6;flex:1;}
+.repo-role{font-size:0.78rem;color:var(--ink-soft);padding-top:2px;}
+.repo-role strong{color:var(--ink);font-weight:600;}
 .repo-tags{display:flex;gap:6px;flex-wrap:wrap;}
 .repo-tags span{
   font-family:var(--font-mono);font-size:0.7rem;color:var(--ink-soft);
@@ -475,6 +481,9 @@ header.nav{
 .tl-org{color:var(--teal-deep);font-size:0.85rem;font-weight:500;}
 .tl-date{font-family:var(--font-mono);font-size:0.74rem;color:var(--ink-faint);white-space:nowrap;}
 .tl-desc{color:var(--ink-soft);font-size:0.9rem;max-width:60ch;margin-top:6px;}
+.tl-list{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:12px;color:var(--ink-soft);font-size:0.82rem;}
+.tl-list li::before{content:'•';color:var(--teal);margin-right:7px;}
+.tl-stack{font-family:var(--font-mono);font-size:0.72rem;color:var(--teal-deep);margin-top:11px;}
 
 /* ============ CERTIFICATIONS ============ */
 .cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:3rem;}
@@ -515,6 +524,9 @@ header.nav{
   transition:border-color .25s var(--ease), transform .25s var(--ease);position:relative;overflow:hidden;
 }
 .contact-card:hover{border-color:var(--teal);transform:translateY(-3px);}
+.contact-main{display:flex;flex-direction:column;gap:16px;text-decoration:none;color:var(--ink);}
+.copy-button{align-self:flex-start;display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink-soft);border-radius:7px;padding:7px 10px;font-size:0.72rem;}
+.copy-button:hover{border-color:var(--teal);color:var(--teal-deep);}
 .contact-icon{
   width:44px;height:44px;border-radius:12px;background:var(--teal-tint);color:var(--teal-deep);
   display:flex;align-items:center;justify-content:center;
@@ -552,6 +564,8 @@ footer{padding:4rem 0 2.4rem;border-top:1px solid var(--line);}
 }
 .foot-social a:hover{color:var(--teal-deep);border-color:var(--teal);}
 .foot-social .icon{width:16px;height:16px;}
+.brand-icon{fill:none;stroke:currentColor;}
+.brand-icon.github{fill:currentColor;stroke:none;}
 .foot-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.6rem;}
 .foot-inner p{font-size:0.8rem;color:var(--ink-faint);}
 
@@ -574,10 +588,13 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--teal);outline-offs
   <symbol id="i-brief" viewBox="0 0 24 24"><rect x="3.2" y="7.5" width="17.6" height="11.5" rx="1.6"/><path d="M8.5 7.5V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5"/><path d="M3.2 12.5h17.6"/></symbol>
   <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5.2"/><path d="m8.3 13.4-1.6 6.6L12 17l5.3 3-1.6-6.6"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="1.8"/><path d="m4 7 8 6 8-6"/></symbol>
+  <symbol id="i-gmail" viewBox="0 0 24 24"><path d="M3.5 18.5V6.2L12 12.8l8.5-6.6v12.3M3.5 6.2H7l5 3.9 5-3.9h4"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><path d="M8 3.5H6a1.5 1.5 0 0 0-1.5 1.5c0 8.3 6.2 14.5 14.5 14.5a1.5 1.5 0 0 0 1.5-1.5v-2l-4-1.6-1.5 1.8a11 11 0 0 1-5.7-5.7L11.6 8 10 4z"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.3 7-11.8A7 7 0 0 0 5 9.2C5 14.7 12 21 12 21z"/><circle cx="12" cy="9.2" r="2.4"/></symbol>
   <symbol id="i-github" viewBox="0 0 24 24"><path d="M12 2.5a9.5 9.5 0 0 0-3 18.5c.5.1.6-.2.6-.5v-1.7c-2.6.6-3.2-1.2-3.2-1.2-.4-1.1-1-1.4-1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.7.4-1.1.6-1.4-2.1-.2-4.3-1-4.3-4.6 0-1 .4-1.9 1-2.5-.1-.2-.4-1.2.1-2.5 0 0 .8-.3 2.7 1a9 9 0 0 1 4.9 0c1.9-1.3 2.7-1 2.7-1 .5 1.3.2 2.3.1 2.5.6.6 1 1.5 1 2.5 0 3.6-2.2 4.4-4.3 4.6.4.3.7.9.7 1.9v2.7c0 .3.2.6.7.5A9.5 9.5 0 0 0 12 2.5z"/></symbol>
-  <symbol id="i-linkedin" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2.5"/><path d="M7.5 10v6.5M7.5 7.6v.05M11.5 16.5V10m0 3c0-1.7 1-3 2.7-3s2.8 1 2.8 3.2v3.3"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M4.5 3.5h15A1.5 1.5 0 0 1 21 5v14a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19V5a1.5 1.5 0 0 1 1.5-1.5zM7.5 10v6.5M7.5 7.5v.1M11.5 16.5V10m0 3c0-1.7 1-3 2.7-3s2.8 1 2.8 3.2v3.3"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 15.4A7.8 7.8 0 0 1 8.6 4.5 8.5 8.5 0 1 0 19.5 15.4z"/></symbol>
   <symbol id="i-external" viewBox="0 0 24 24"><path d="M9 5h10v10"/><path d="M19 5 5 19"/></symbol>
   <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3.5v11.5m0 0-4-4m4 4 4-4"/><path d="M4.5 17v2a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-2"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
@@ -607,10 +624,13 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--teal);outline-offs
       <a href="#stack"><svg class="icon" width="15" height="15"><use href="#i-settings"/></svg>Stack</a>
       <a href="#projects"><svg class="icon" width="15" height="15"><use href="#i-folder"/></svg>Projets</a>
       <a href="#contact" class="nav-cta">
-        <svg class="icon" width="15" height="15"><use href="#i-mail"/></svg>
+        <svg class="icon brand-icon" width="15" height="15"><use href="#i-gmail"/></svg>
         Contact
       </a>
     </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Activer le thème clair" aria-pressed="true">
+      <svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg><span class="theme-label">Thème</span>
+    </button>
     <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu">
       <svg class="icon" width="22" height="22"><use href="#i-menu"/></svg>
     </button>
@@ -638,11 +658,12 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--teal);outline-offs
           <svg class="icon" width="16" height="16"><use href="#i-folder"/></svg>
           Voir mes projets
         </a>
-        <a href="#experience" class="btn btn-v2-ghost">
-          <svg class="icon" width="16" height="16"><use href="#i-brief"/></svg>
-          Mon parcours
+        <a href="assets/cv.pdf" class="btn btn-v2-ghost" download>
+          <svg class="icon" width="16" height="16"><use href="#i-download"/></svg>
+          Télécharger mon CV
         </a>
       </div>
+      <p class="cv-note">Le fichier PDF sera disponible ici dès son ajout dans <strong>assets/cv.pdf</strong>.</p>
     </div>
     <div class="hero-v2-visual">
       <div class="hero-v2-blob"></div>
@@ -651,79 +672,38 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--teal);outline-offs
   </div>
 </div>
 
-<!-- ============ IDENTITY (code editor) ============ -->
-<section id="identity" data-scroll-section style="padding-top:4.5rem;">
-  <div class="wrap">
-    <div class="reveal identity-head">
-      <div class="tag-line">identity</div>
-      <h2 class="h2" style="max-width:none;">Une autre façon de me lire</h2>
-      <p class="lead" style="margin-bottom:2.2rem;">Clique sur un onglet pour voir mon profil dans différentes syntaxes.</p>
-    </div>
-    <div class="editor reveal" id="heroEditor">
-      <div class="editor-top">
-        <div class="dots"><span></span><span></span><span></span></div>
-        <div class="tabs" id="editorTabs">
-          <button class="tab active" data-tab="js"><span class="dotlang" style="color:#F2B94E"></span>whoami.js</button>
-          <button class="tab" data-tab="json"><span class="dotlang" style="color:#7FC6E8"></span>about.json</button>
-          <button class="tab" data-tab="php"><span class="dotlang" style="color:#B18CE0"></span>Developer.php</button>
-          <button class="tab" data-tab="md"><span class="dotlang" style="color:#B7DD9A"></span>cv.md</button>
-        </div>
-      </div>
-      <div class="editor-body">
-        <div class="code-lines" id="codeOutput"></div>
-      </div>
-      <div class="editor-foot">
-        <span>UTF-8 · <span class="lang" id="editorLang">JavaScript</span></span>
-        <span>Ln 8, Col 2</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="wrap"><hr class="divider"></div>
-
 <!-- ============ ABOUT ============ -->
 <section id="about" data-scroll-section>
   <div class="wrap">
     <div class="reveal">
       <div class="tag-line">about</div>
       <h2 class="h2">Qui suis-je&nbsp;?</h2>
-      <p class="lead">Passionné par le développement web et la cybersécurité, je construis des solutions digitales complètes avec un œil pour le détail.</p>
+      <p class="lead">Un parcours orienté développement web, avec la sécurité comme fil conducteur.</p>
     </div>
     <div class="about-grid reveal">
       <div class="about-copy">
         <p>Étudiant en <strong>Licence 1 Réseaux &amp; Sécurité Informatique</strong> à l'Université Virtuelle de Côte d'Ivoire, je cumule un socle solide en développement fullstack avec une approche orientée sécurité.</p>
         <p>Mon stage de 5 mois chez <strong>WorldDev</strong> m'a permis d'acquérir une expérience concrète sur des projets à forte valeur ajoutée, de la conception d'API jusqu'à la livraison front-end.</p>
-        <p>Je maîtrise aussi bien le front-end (React, Svelte, Tailwind) que le back-end (Laravel, PHP) et une palette de bases de données — MySQL, PostgreSQL, MongoDB, Firebase — avec une sensibilité forte pour le design et l'expérience utilisateur.</p>
+        <p>Je cherche aujourd'hui une expérience où je peux continuer à progresser sur des applications utiles, maintenables et correctement sécurisées, au contact d'une équipe qui partage cette exigence.</p>
+        <div class="about-facts">
+          <div class="about-fact"><strong>5 mois</strong><span>chez WorldDev</span></div>
+          <div class="about-fact"><strong>Fullstack</strong><span>front et back-end</span></div>
+          <div class="about-fact"><strong>Abidjan</strong><span>Côte d'Ivoire</span></div>
+        </div>
       </div>
-      <div class="info-card">
-        <div class="info-photo">
-          <img src="assets/profile.jpg" alt="Portrait de Flan Christ Emmanuel">
-          <div class="info-photo-tag"><svg class="icon"><use href="#i-pin"/></svg>Abidjan, Côte d'Ivoire</div>
-        </div>
-        <div class="info-row">
-          <div class="info-icon"><svg class="icon" width="18" height="18"><use href="#i-user"/></svg></div>
-          <div><div class="info-label">Nom complet</div><div class="info-val">Flan Christ Emmanuel</div></div>
-        </div>
-        <div class="info-row">
-          <div class="info-icon"><svg class="icon" width="18" height="18"><use href="#i-brief"/></svg></div>
-          <div><div class="info-label">Rôle</div><div class="info-val">Développeur Fullstack</div></div>
-        </div>
-        <div class="info-row">
-          <div class="info-icon"><svg class="icon" width="18" height="18"><use href="#i-mail"/></svg></div>
-          <div><div class="info-label">Email</div><div class="info-val"><a href="mailto:lemrack7@gmail.com">lemrack7@gmail.com</a></div></div>
-        </div>
-        <div class="info-row">
-          <div class="info-icon"><svg class="icon" width="18" height="18"><use href="#i-phone"/></svg></div>
-          <div><div class="info-label">Téléphone</div><div class="info-val"><a href="tel:0704770644">07 04 77 06 44</a></div></div>
-        </div>
-        <div class="info-row">
-          <div class="info-icon"><svg class="icon" width="18" height="18"><use href="#i-pin"/></svg></div>
-          <div><div class="info-label">Localisation</div><div class="info-val">Cocody, 2 Plateaux, Abidjan 🇨🇮</div></div>
-        </div>
-        <div class="info-row">
-          <div class="info-icon"><svg class="icon" width="18" height="18"><use href="#i-shield"/></svg></div>
-          <div><div class="info-label">Formation</div><div class="info-val">L1 Réseaux &amp; Sécurité — UVCI</div></div>
+      <div class="about-terminal">
+        <div class="editor" id="heroEditor">
+          <div class="editor-top">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="tabs" id="editorTabs">
+              <button class="tab active" data-tab="js"><span class="dotlang" style="color:#F2B94E"></span>whoami.js</button>
+              <button class="tab" data-tab="json"><span class="dotlang" style="color:#7FC6E8"></span>about.json</button>
+              <button class="tab" data-tab="php"><span class="dotlang" style="color:#B18CE0"></span>Developer.php</button>
+              <button class="tab" data-tab="md"><span class="dotlang" style="color:#B7DD9A"></span>cv.md</button>
+            </div>
+          </div>
+          <div class="editor-body"><div class="code-lines" id="codeOutput"></div></div>
+          <div class="editor-foot"><span>UTF-8 · <span class="lang" id="editorLang">JavaScript</span></span><span>interactive</span></div>
         </div>
       </div>
     </div>
@@ -782,7 +762,9 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--teal);outline-offs
             <div><div class="tl-title">Développeur Web Fullstack</div><div class="tl-org">WorldDev</div></div>
             <div class="tl-date">2024 — 5 mois</div>
           </div>
-          <p class="tl-desc">Conception et développement d'applications web complètes : mise en place du back-end API avec Laravel, intégration front-end, travail en équipe avec Git/GitHub, livraison de projets clients concrets.</p>
+          <p class="tl-desc">Développement d'applications web complètes, de l'API à l'interface, dans le cadre de projets clients concrets.</p>
+          <ul class="tl-list"><li>Développement d'API</li><li>Intégration front-end</li><li>Travail en équipe</li><li>Livraison de projets</li></ul>
+          <div class="tl-stack">Laravel · React · Git · GitHub</div>
         </div>
       </div>
       <div class="tl-item">
@@ -839,22 +821,26 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--teal);outline-offs
       <p class="lead">Un projet ou une opportunité de stage&nbsp;? N'hésitez pas à me contacter.</p>
     </div>
     <div class="contact-wrap reveal">
-      <a href="mailto:lemrack7@gmail.com" class="contact-card" data-copy="lemrack7@gmail.com">
-        <span class="copy-hint">cliquer pour copier</span>
-        <div class="contact-icon"><svg class="icon" width="20" height="20"><use href="#i-mail"/></svg></div>
-        <div><div class="clabel">Email</div><div class="cval">lemrack7@gmail.com</div></div>
-      </a>
-      <a href="tel:0704770644" class="contact-card" data-copy="0704770644">
-        <span class="copy-hint">cliquer pour copier</span>
-        <div class="contact-icon"><svg class="icon" width="20" height="20"><use href="#i-phone"/></svg></div>
-        <div><div class="clabel">Téléphone</div><div class="cval">07 04 77 06 44</div></div>
-      </a>
+      <div class="contact-card">
+        <a href="mailto:lemrack7@gmail.com" class="contact-main">
+          <div class="contact-icon"><svg class="icon brand-icon" width="20" height="20"><use href="#i-gmail"/></svg></div>
+          <div><div class="clabel">Email</div><div class="cval">lemrack7@gmail.com</div></div>
+        </a>
+        <button class="copy-button" type="button" data-copy="lemrack7@gmail.com"><svg class="icon"><use href="#i-copy"/></svg><span>Copier l'email</span></button>
+      </div>
+      <div class="contact-card">
+        <a href="tel:0704770644" class="contact-main">
+          <div class="contact-icon"><svg class="icon" width="20" height="20"><use href="#i-phone"/></svg></div>
+          <div><div class="clabel">Téléphone</div><div class="cval">07 04 77 06 44</div></div>
+        </a>
+        <button class="copy-button" type="button" data-copy="0704770644"><svg class="icon"><use href="#i-copy"/></svg><span>Copier le numéro</span></button>
+      </div>
       <a href="https://github.com/user236054" target="_blank" rel="noopener" class="contact-card">
-        <div class="contact-icon"><svg class="icon" width="20" height="20"><use href="#i-github"/></svg></div>
+        <div class="contact-icon"><svg class="icon brand-icon github" width="20" height="20"><use href="#i-github"/></svg></div>
         <div><div class="clabel">GitHub</div><div class="cval">github.com/user236054</div></div>
       </a>
       <a href="https://www.linkedin.com/in/x-undefined-4240a7402/" target="_blank" rel="noopener" class="contact-card">
-        <div class="contact-icon"><svg class="icon" width="20" height="20"><use href="#i-linkedin"/></svg></div>
+        <div class="contact-icon"><svg class="icon brand-icon" width="20" height="20"><use href="#i-linkedin"/></svg></div>
         <div><div class="clabel">LinkedIn</div><div class="cval">Flan Christ Emmanuel</div></div>
       </a>
     </div>
@@ -892,9 +878,9 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--teal);outline-offs
       <div class="foot-col">
         <div class="foot-title">Suivre</div>
         <div class="foot-social">
-          <a href="https://github.com/user236054" target="_blank" rel="noopener" aria-label="GitHub"><svg class="icon"><use href="#i-github"/></svg></a>
-          <a href="https://www.linkedin.com/in/x-undefined-4240a7402/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="icon"><use href="#i-linkedin"/></svg></a>
-          <a href="mailto:lemrack7@gmail.com" aria-label="Email"><svg class="icon"><use href="#i-mail"/></svg></a>
+          <a href="https://github.com/user236054" target="_blank" rel="noopener" aria-label="GitHub"><svg class="icon brand-icon github"><use href="#i-github"/></svg></a>
+          <a href="https://www.linkedin.com/in/x-undefined-4240a7402/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="icon brand-icon"><use href="#i-linkedin"/></svg></a>
+          <a href="mailto:lemrack7@gmail.com" aria-label="Email"><svg class="icon brand-icon"><use href="#i-gmail"/></svg></a>
         </div>
       </div>
     </div>
@@ -909,6 +895,26 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--teal);outline-offs
 </main>
 
 <script>
+/* ============ THEME ============ */
+const themeToggle = document.getElementById('themeToggle');
+let savedTheme = 'dark';
+try { savedTheme = localStorage.getItem('portfolio-theme') || 'dark'; } catch(err) {}
+document.documentElement.dataset.theme = savedTheme;
+
+function updateThemeControl(){
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  themeToggle.setAttribute('aria-pressed', String(isDark));
+  themeToggle.setAttribute('aria-label', isDark ? 'Activer le thème clair' : 'Activer le thème sombre');
+  themeToggle.querySelector('use').setAttribute('href', isDark ? '#i-sun' : '#i-moon');
+}
+updateThemeControl();
+themeToggle.addEventListener('click', () => {
+  const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = nextTheme;
+  try { localStorage.setItem('portfolio-theme', nextTheme); } catch(err) {}
+  updateThemeControl();
+});
+
 /* ============ MOBILE NAV ============ */
 const navToggle = document.getElementById('navToggle');
 const mobilePanel = document.getElementById('mobilePanel');
@@ -987,19 +993,18 @@ editorTabs.querySelectorAll('.tab').forEach(tab => {
 
 /* ============ STACK / TERMINAL ============ */
 const categories = [
-  { id:'frontend', label:'Frontend', icon:'i-code', cmd:'skills --list --category=frontend', items:[
-    ['React','Interfaces dynamiques'],['Svelte','Composants réactifs légers'],['TailwindCSS','Styling utilitaire'],
-    ['JavaScript','Langage cœur du front'],['HTML5 / CSS3','Fondations web'],['Bootstrap','Prototypage rapide']
+  { id:'core', label:'Maîtrisé / principal', icon:'i-code', level:'principal', cmd:'skills --list --level=principal', items:[
+    ['React','Interfaces dynamiques','react','61DAFB'],['JavaScript','Langage cœur du front','javascript','F7DF1E'],
+    ['Laravel','API &amp; MVC','laravel','FF2D20'],['PHP','Back-end','php','777BB4'],
+    ['HTML5 / CSS3','Fondations web','html5','E34F26'],['Tailwind CSS','Styling utilitaire','tailwindcss','06B6D4'],
+    ['MySQL / PostgreSQL','Bases relationnelles','postgresql','4169E1']
   ]},
-  { id:'backend', label:'Backend', icon:'i-terminal', cmd:'skills --list --category=backend', items:[
-    ['Laravel','Framework API &amp; MVC'],['PHP','Langage back-end principal'],['React Native','Applications mobiles']
+  { id:'learning', label:'En apprentissage', icon:'i-layers', level:'en cours', cmd:'skills --list --level=learning', items:[
+    ['Svelte','Composants réactifs','svelte','FF3E00'],['React Native','Applications mobiles','react','61DAFB'],['Python','Automatisation &amp; scripts','python','3776AB']
   ]},
-  { id:'data', label:'Bases de données', icon:'i-db', cmd:'skills --list --category=databases', items:[
-    ['MySQL','Relationnel principal'],['PostgreSQL','Relationnel avancé'],['MongoDB','NoSQL orienté document'],['Firebase','Backend temps réel']
-  ]},
-  { id:'tools', label:'Sécurité &amp; Outils', icon:'i-shield', cmd:'skills --list --category=tools', items:[
-    ['Git / GitHub','Versioning &amp; collaboration'],['Linux','Environnement système'],['DBeaver','Client SQL universel'],
-    ['phpMyAdmin','Administration MySQL'],['XAMPP','Environnement local'],['Bruno','Tests d\'API']
+  { id:'tools', label:'Outils', icon:'i-shield', level:'outils', cmd:'skills --list --category=tools', items:[
+    ['Git','Versioning','git','F05032'],['GitHub','Collaboration','github','181717'],['Linux','Environnement système','linux','FCC624'],
+    ['Bruno','Tests d\'API','bruno','F4AA41'],['DBeaver','Client SQL','dbeaver','382923'],['phpMyAdmin','Administration MySQL','phpmyadmin','6C78AF']
   ]}
 ];
 
@@ -1009,7 +1014,7 @@ const pkgList = document.getElementById('pkgList');
 
 catList.innerHTML = categories.map((c,i) => `
   <button class="cat-btn ${i===0?'active':''}" data-cat="${c.id}">
-    <svg class="icon"><use href="#${c.icon}"/></svg>${c.label}
+    <svg class="icon"><use href="#${c.icon}"/></svg>${c.label}<small>${c.level}</small>
   </button>`).join('');
 
 function typeCommand(text, cb){
@@ -1025,9 +1030,9 @@ function typeCommand(text, cb){
 }
 
 function renderPkgs(cat){
-  pkgList.innerHTML = cat.items.map(([name,note],i) => `
+  pkgList.innerHTML = cat.items.map(([name,note,logo,color],i) => `
     <div class="pkg" style="animation-delay:${i*0.05}s">
-      <span class="pkg-name">${name}</span>
+      <span class="pkg-name"><img class="pkg-logo" src="https://cdn.simpleicons.org/${logo}/${color}" alt="" loading="lazy">${name}</span>
       <span class="pkg-note">${note}</span>
     </div>`).join('');
 }
@@ -1042,7 +1047,7 @@ catList.addEventListener('click', e => {
   const btn = e.target.closest('.cat-btn');
   if(btn) loadCategory(btn.dataset.cat);
 });
-loadCategory('frontend');
+loadCategory('core');
 
 /* ============ PROJECT VISUALS (unique SVG per project domain) ============ */
 const projectVisuals = {
@@ -1068,21 +1073,28 @@ const projectVisuals = {
 
 const projects = [
   { title:'AIT Digital', domain:'ait-digital.onrender.com', visual:'marketing',
+    cover:'assets/ait_digital.png',
     tags:['HTML/CSS','JavaScript','Marketing'],
-    desc:"Site web de marketing digital conçu avec des couleurs modernes, entièrement responsive et des animations fluides.",
+    role:'Conception et intégration front-end',
+    desc:"Site web de marketing digital responsive, avec une direction visuelle moderne et des animations de navigation fluides.",
     link:'https://ait-digital.onrender.com/' },
   { title:'SIBIO 2026', domain:'salon-du-bio.onrender.com', visual:'agri',
+    cover:'assets/sibio.png',
     tags:['Laravel','JS','Fullstack'],
-    desc:"Site officiel du Salon International du Bio — 3e édition à l'Université FHB. Projet le plus complet : front + back-end, événementiel international.",
+    role:'Développement fullstack',
+    desc:"Site officiel du Salon International du Bio, 3e édition à l'Université FHB, avec un périmètre front-end et back-end pour un événement international.",
     link:'https://www.fap-bio.org/' },
   { title:'Victoire Immobilier', domain:'victoire-immobilier-frontend.vercel.app', visual:'realestate',
+    cover:'assets/victoire_immo.png',
     tags:['Laravel API','Sanctum','Spatie'],
-    desc:"Back-end d'agence immobilière : API REST, authentification Sanctum, rôles &amp; permissions via Spatie, panel admin complet.",
+    role:'Développement back-end / API',
+    desc:"Back-end d'agence immobilière avec API REST, authentification Sanctum, rôles et permissions via Spatie, et panel d'administration.",
     link:'https://victoire-immobilier-frontend.vercel.app/' },
-    
   { title:'E-STOCK FNE', domain:'estock-fne.com', visual:'realestate',
-    tags:['Laravel API','Sanctum','Spatie', 'SQL', 'Reacct',],
-    desc:"Back-end d'agence immobilière : API REST, authentification Sanctum, rôles &amp; permissions via Spatie, panel admin complet.",
+    cover:'assets/estock.png',
+    tags:['Laravel API','Sanctum','Spatie','SQL','React'],
+    role:'Développement web',
+    desc:"Application web E-STOCK FNE présentée en ligne, avec une base Laravel/API et une interface React.",
     link:'https://estock-fne.com/' }
 ];
 
@@ -1094,13 +1106,14 @@ projectsGrid.innerHTML = projects.map(p => `
       <div class="repo-url"><svg class="icon"><use href="#i-globe"/></svg>${p.domain}</div>
     </div>
     <div class="repo-visual" onclick="window.open('${p.link}','_blank')">
-      ${projectVisuals[p.visual]}
+      ${p.cover ? `<img class="repo-cover" src="${p.cover}" alt="Capture d'écran du projet ${p.title}" loading="lazy" onerror="this.replaceWith(document.createRange().createContextualFragment(projectVisuals['${p.visual}']))">` : projectVisuals[p.visual]}
       <div class="repo-overlay"><svg class="icon" style="stroke:#fff"><use href="#i-external"/></svg>Ouvrir le projet</div>
     </div>
     <div class="repo-body">
       <div class="repo-status"><span></span>En ligne</div>
       <div class="repo-title">${p.title}</div>
       <p class="repo-desc">${p.desc}</p>
+      <div class="repo-role"><strong>Rôle :</strong> ${p.role}</div>
       <div class="repo-tags">${p.tags.map(t=>`<span>${t}</span>`).join('')}</div>
       <a href="${p.link}" target="_blank" rel="noopener" class="repo-link">
         Voir le projet <svg class="icon"><use href="#i-arrow"/></svg>
@@ -1130,15 +1143,15 @@ certGrid.innerHTML = certs.map(c => `
   </div>`).join('');
 
 /* ============ COPY TO CLIPBOARD ============ */
-document.querySelectorAll('.contact-card[data-copy]').forEach(card => {
-  card.addEventListener('click', e => {
-    e.preventDefault();
-    const val = card.dataset.copy;
+document.querySelectorAll('.copy-button[data-copy]').forEach(button => {
+  button.addEventListener('click', () => {
+    const val = button.dataset.copy;
     navigator.clipboard?.writeText(val).catch(()=>{});
-    const hint = card.querySelector('.copy-hint');
-    hint.textContent = 'copié !';
-    hint.classList.add('copied');
-    setTimeout(() => { hint.textContent = 'cliquer pour copier'; hint.classList.remove('copied'); }, 1600);
+    const label = button.querySelector('span');
+    const original = label.textContent;
+    label.textContent = 'Copié !';
+    button.classList.add('copied');
+    setTimeout(() => { label.textContent = original; button.classList.remove('copied'); }, 1600);
   });
 });
 
