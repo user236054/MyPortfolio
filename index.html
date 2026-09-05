@@ -406,19 +406,20 @@ html[data-theme="dark"] header.nav{background:rgba(13,18,21,0.84);}
 .pkg-logo{width:22px;height:22px;object-fit:contain;flex-shrink:0;}
 
 /* ============ PROJECTS ============ */
-.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;}
-@media (max-width:960px){.projects-grid{grid-template-columns:1fr;}}
+.projects-grid{display:grid;grid-template-columns:1fr;gap:1.4rem;max-width:none;margin:0 auto;}
+#projects .wrap{max-width:none;}
 
 .repo-card{
   background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
   overflow:hidden;transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s;
-  display:flex;flex-direction:column;
+  display:grid;grid-template-columns:minmax(0,1.08fr) minmax(360px,0.92fr);min-height:330px;
 }
 .repo-card:hover{transform:translateY(-6px);box-shadow:0 26px 44px -28px rgba(18,23,28,0.28);border-color:var(--line);}
 
 .repo-bar{
   display:flex;align-items:center;gap:10px;padding:11px 14px;
   background:var(--bg-soft);border-bottom:1px solid var(--line);
+  grid-column:1 / -1;
 }
 .repo-bar .dots span{width:8px;height:8px;}
 .repo-url{
@@ -430,20 +431,26 @@ html[data-theme="dark"] header.nav{background:rgba(13,18,21,0.84);}
 .repo-url .icon{width:11px;height:11px;color:var(--teal-deep);}
 
 .repo-visual{
-  height:150px;position:relative;cursor:pointer;
+  min-height:300px;position:relative;cursor:pointer;
   display:flex;align-items:center;justify-content:center;overflow:hidden;
+  background:var(--code-bg);
 }
 .repo-cover{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .5s var(--ease),filter .3s var(--ease);}
 .repo-card:hover .repo-cover{transform:scale(1.035);filter:saturate(1.08);}
 .repo-visual svg{width:100%;height:100%;}
-.repo-overlay{
-  position:absolute;inset:0;background:rgba(17,23,28,0.72);
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  color:#fff;font-size:0.82rem;font-weight:500;opacity:0;transition:opacity .3s var(--ease);
-}
-.repo-card:hover .repo-overlay{opacity:1;}
-
-.repo-body{padding:20px 20px 22px;display:flex;flex-direction:column;gap:12px;flex:1;}
+.repo-carousel{position:absolute;inset:0;}
+.repo-carousel .repo-cover,.repo-carousel .fallback-visual{position:absolute;inset:0;opacity:0;transition:opacity .3s var(--ease);}
+.repo-carousel [data-active="true"]{opacity:1;}
+.fallback-visual{width:100%;height:100%;}
+.carousel-control{position:absolute;z-index:3;top:50%;transform:translateY(-50%);width:34px;height:34px;border:1px solid rgba(255,255,255,.28);border-radius:50%;background:rgba(10,16,20,.68);color:#fff;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s var(--ease),background .25s var(--ease);}
+.repo-visual:hover .carousel-control,.repo-visual:focus-within .carousel-control{opacity:1;}
+.carousel-control:hover{background:var(--teal-deep);}
+.carousel-control.prev{left:14px;}.carousel-control.next{right:14px;}
+.carousel-control .icon{width:16px;height:16px;}
+.carousel-dots{position:absolute;z-index:3;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;}
+.carousel-dot{width:7px;height:7px;border:0;border-radius:50%;padding:0;background:rgba(255,255,255,.45);}
+.carousel-dot.active{width:22px;border-radius:100px;background:var(--teal);}
+.repo-body{padding:30px 32px 28px;display:flex;flex-direction:column;gap:12px;min-width:0;}
 .repo-status{
   display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);
   font-size:0.7rem;color:var(--teal-deep);width:fit-content;
@@ -453,17 +460,27 @@ html[data-theme="dark"] header.nav{background:rgba(13,18,21,0.84);}
 .repo-desc{color:var(--ink-soft);font-size:0.86rem;line-height:1.6;flex:1;}
 .repo-role{font-size:0.78rem;color:var(--ink-soft);padding-top:2px;}
 .repo-role strong{color:var(--ink);font-weight:600;}
-.repo-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.repo-tags span{
-  font-family:var(--font-mono);font-size:0.7rem;color:var(--ink-soft);
-  border:1px solid var(--line);border-radius:6px;padding:3px 8px;
-}
+.repo-tags{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.repo-tech{position:relative;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:7px;background:var(--bg-soft);}
+.repo-tech img{width:17px;height:17px;object-fit:contain;}
+.repo-tech::after{content:attr(aria-label);position:absolute;left:50%;bottom:calc(100% + 7px);transform:translate(-50%,4px);padding:5px 8px;border-radius:5px;background:var(--ink);color:var(--bg);font-family:var(--font-mono);font-size:0.65rem;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s var(--ease),transform .2s var(--ease);z-index:8;}
+.repo-tech:hover::after,.repo-tech:focus-visible::after{opacity:1;transform:translate(-50%,0);}
 .repo-link{
   display:flex;align-items:center;gap:7px;font-size:0.85rem;font-weight:500;
   text-decoration:none;color:var(--ink);margin-top:4px;
 }
 .repo-link .icon{width:15px;height:15px;transition:transform .25s var(--ease);}
 .repo-card:hover .repo-link .icon{transform:translate(2px,-2px);}
+@media (max-width:820px){
+  .repo-card{grid-template-columns:1fr;}
+  .repo-visual{min-height:260px;}
+  .repo-body{padding:24px 22px 24px;}
+}
+@media (max-width:520px){
+  .repo-visual{min-height:210px;}
+  .repo-body{padding:21px 18px 22px;}
+  .carousel-control{opacity:1;width:30px;height:30px;}
+}
 
 /* ============ TIMELINE ============ */
 .timeline{position:relative;padding-left:2px;}
@@ -798,12 +815,12 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--teal);outline-offs
         <div class="lang-block">
           <div class="lang-name">Français</div>
           <div class="lang-level">Langue maternelle</div>
-          <div class="lang-bar"><div class="lang-fill" data-w="100"></div></div>
+          <!-- <div class="lang-bar"><div class="lang-fill" data-w="100"></div></div> -->
         </div>
         <div class="lang-block">
           <div class="lang-name">Anglais</div>
           <div class="lang-level">Niveau B1</div>
-          <div class="lang-bar"><div class="lang-fill" data-w="55"></div></div>
+          <!-- <div class="lang-bar"><div class="lang-fill" data-w="55"></div></div> -->
         </div>
       </div>
     </div>
@@ -1072,31 +1089,40 @@ const projectVisuals = {
 };
 
 const projects = [
-  { title:'AIT Digital', domain:'ait-digital.onrender.com', visual:'marketing',
-    cover:'assets/ait_digital.png',
-    tags:['HTML/CSS','JavaScript','Marketing'],
-    role:'Conception et intégration front-end',
-    desc:"Site web de marketing digital responsive, avec une direction visuelle moderne et des animations de navigation fluides.",
-    link:'https://ait-digital.onrender.com/' },
-  { title:'SIBIO 2026', domain:'salon-du-bio.onrender.com', visual:'agri',
-    cover:'assets/sibio.png',
-    tags:['Laravel','JS','Fullstack'],
+     { title:'SIBIO 2026', domain:'salon-du-bio.onrender.com', visual:'agri',
+    images:['assets/sibio.png','assets/sibio2.png','assets/sibio3.png'],
+  tags:['Laravel','JavaScript'],
     role:'Développement fullstack',
     desc:"Site officiel du Salon International du Bio, 3e édition à l'Université FHB, avec un périmètre front-end et back-end pour un événement international.",
     link:'https://www.fap-bio.org/' },
+
+
+
   { title:'Victoire Immobilier', domain:'victoire-immobilier-frontend.vercel.app', visual:'realestate',
-    cover:'assets/victoire_immo.png',
-    tags:['Laravel API','Sanctum','Spatie'],
+    images:['assets/victoire_immo.png','assets/victoire_immo_2.png','assets/victoire_immo_3.png'],
+    tags:['Laravel','PHP','MySQL','React'],
     role:'Développement back-end / API',
     desc:"Back-end d'agence immobilière avec API REST, authentification Sanctum, rôles et permissions via Spatie, et panel d'administration.",
     link:'https://victoire-immobilier-frontend.vercel.app/' },
   { title:'E-STOCK FNE', domain:'estock-fne.com', visual:'realestate',
-    cover:'assets/estock.png',
-    tags:['Laravel API','Sanctum','Spatie','SQL','React'],
+    images:['assets/estock.png','assets/estock2.png','assets/estock3.png'],
+    tags:['Laravel','PHP','MySQL','React'],
     role:'Développement web',
     desc:"Application web E-STOCK FNE présentée en ligne, avec une base Laravel/API et une interface React.",
-    link:'https://estock-fne.com/' }
+    link:'https://estock-fne.com/' },
+
+  { title:'AIT Digital', domain:'ait-digital.onrender.com', visual:'marketing',
+    images:['assets/ait_digital.png','',''],
+    tags:['HTML5','CSS3','JavaScript'],
+    role:'Conception et intégration front-end',
+    desc:"Site web de marketing digital responsive, avec une direction visuelle moderne et des animations de navigation fluides.",
+    link:'https://ait-digital.onrender.com/' }
 ];
+
+const technologyLogos = {
+  Laravel:['laravel','FF2D20'], PHP:['php','777BB4'], MySQL:['mysql','4479A1'], React:['react','61DAFB'],
+  JavaScript:['javascript','F7DF1E'], HTML5:['html5','E34F26'], CSS3:['css3','1572B6']
+};
 
 const projectsGrid = document.getElementById('projectsGrid');
 projectsGrid.innerHTML = projects.map(p => `
@@ -1105,21 +1131,61 @@ projectsGrid.innerHTML = projects.map(p => `
       <div class="dots"><span></span><span></span><span></span></div>
       <div class="repo-url"><svg class="icon"><use href="#i-globe"/></svg>${p.domain}</div>
     </div>
-    <div class="repo-visual" onclick="window.open('${p.link}','_blank')">
-      ${p.cover ? `<img class="repo-cover" src="${p.cover}" alt="Capture d'écran du projet ${p.title}" loading="lazy" onerror="this.replaceWith(document.createRange().createContextualFragment(projectVisuals['${p.visual}']))">` : projectVisuals[p.visual]}
-      <div class="repo-overlay"><svg class="icon" style="stroke:#fff"><use href="#i-external"/></svg>Ouvrir le projet</div>
+    <div class="repo-visual" data-project="${p.title}">
+      <div class="repo-carousel">
+        ${p.images.filter(Boolean).map((image,index) => `<img class="repo-cover" data-slide="${index}" data-active="${index===0}" src="${image}" alt="Capture ${index + 1} du projet ${p.title}" loading="lazy">`).join('') || `<div class="fallback-visual" data-slide="0" data-active="true">${projectVisuals[p.visual]}</div>`}
+      </div>
+      ${p.images.filter(Boolean).length > 1 ? `<button class="carousel-control prev" type="button" aria-label="Image précédente"><svg class="icon"><use href="#i-arrow"/></svg></button><button class="carousel-control next" type="button" aria-label="Image suivante"><svg class="icon"><use href="#i-arrow"/></svg></button><div class="carousel-dots">${p.images.filter(Boolean).map((_,index) => `<button class="carousel-dot ${index===0?'active':''}" type="button" data-slide-to="${index}" aria-label="Afficher l'image ${index + 1}"></button>`).join('')}</div>` : ''}
     </div>
     <div class="repo-body">
       <div class="repo-status"><span></span>En ligne</div>
       <div class="repo-title">${p.title}</div>
       <p class="repo-desc">${p.desc}</p>
       <div class="repo-role"><strong>Rôle :</strong> ${p.role}</div>
-      <div class="repo-tags">${p.tags.map(t=>`<span>${t}</span>`).join('')}</div>
+      <div class="repo-tags" aria-label="Technologies utilisées">${p.tags.map(tag => { const [logo,color] = technologyLogos[tag] || []; return logo ? `<span class="repo-tech" tabindex="0" aria-label="${tag}"><img src="https://cdn.simpleicons.org/${logo}/${color}" alt="Logo ${tag}" loading="lazy"></span>` : ''; }).join('')}</div>
       <a href="${p.link}" target="_blank" rel="noopener" class="repo-link">
         Voir le projet <svg class="icon"><use href="#i-arrow"/></svg>
       </a>
     </div>
   </div>`).join('');
+
+projectsGrid.addEventListener('click', event => {
+  const visual = event.target.closest('.repo-visual');
+  if(!visual) return;
+  const card = visual.closest('.repo-card');
+  const project = projects.find(item => item.title === visual.dataset.project);
+  const slides = [...visual.querySelectorAll('[data-slide]')];
+  const hasCarousel = slides.length > 1;
+  if(event.target.closest('.carousel-control') || event.target.closest('.carousel-dot')){
+    event.preventDefault();
+    const current = slides.findIndex(slide => slide.dataset.active === 'true');
+    const requested = event.target.closest('[data-slide-to]');
+    const step = event.target.closest('.next') ? 1 : -1;
+    const next = requested ? Number(requested.dataset.slideTo) : (current + step + slides.length) % slides.length;
+    activateSlide(visual, next);
+    return;
+  }
+  if(project) window.open(project.link,'_blank');
+});
+
+function activateSlide(visual, index){
+  const slides = [...visual.querySelectorAll('[data-slide]')];
+  if(!slides.length) return;
+  const next = (index + slides.length) % slides.length;
+  slides.forEach(slide => slide.dataset.active = String(slide.dataset.slide === String(next)));
+  visual.querySelectorAll('.carousel-dot').forEach(dot => dot.classList.toggle('active', dot.dataset.slideTo === String(next)));
+}
+
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('.repo-visual').forEach(visual => {
+    if(visual.querySelectorAll('[data-slide]').length > 1){
+      setInterval(() => {
+        const current = [...visual.querySelectorAll('[data-slide]')].findIndex(slide => slide.dataset.active === 'true');
+        activateSlide(visual, current + 1);
+      }, 30000);
+    }
+  });
+}
 
 /* ============ CERTIFICATIONS ============ */
 const certs = [
